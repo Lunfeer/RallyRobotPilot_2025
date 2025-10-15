@@ -122,8 +122,8 @@ class RaysNNMsgProcessor:
             return {"forward": False, "back": False, "left": False, "right": False}
 
         s, c = angle_to_sin_cos(getattr(message, "car_angle", 0.0))
-        x = np.concatenate([rays, np.array([s, c], dtype=np.float32)], dtype=np.float32)
-        # normalisation identique au training
+        spd  = float(getattr(message, "car_speed", 0.0))   
+        x = np.concatenate([rays, np.array([s, c, spd], dtype=np.float32)], dtype=np.float32)
         x = (x - self.mean) / self.std
 
         xt = torch.from_numpy(x).unsqueeze(0).to(self.device)
